@@ -6,4 +6,4 @@ before_install:
 
 install:
   - FILE="-Dfile=VerifySpeedAndroidLibrary-prod-release.aar"
-  - mvn install:install-file $FILE -DgroupId=com.github.verifyspeed -DartifactId=VerifySpeedAndroidLibrary-prod-release -Dversion=1.0.1 -Dpackaging=aar -DgeneratePom=true
+  - mvn install:install-file $FILE -DgroupId=com.github.verifyspeed -DartifactId=VerifySpeedAndroidLibrary-prod-release -Dversion=1.0.0 -Dpackaging=aar -DgeneratePom=true
