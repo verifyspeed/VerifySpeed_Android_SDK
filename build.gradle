@@ -80,16 +80,36 @@ dependencies {
 
 publishing {
     publications {
-        release(MavenPublication) {
-            groupId = 'com.github.verifyspeed'
-            artifactId = 'VerifySpeed_Android_SDK'
-            version = '1.0.0'
+        maven(MavenPublication) {
+            from components.release
             pom {
-                description = 'First release'
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+                    configurations.api.allDependencies.each { dep ->
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dep.group)
+                        dependencyNode.appendNode('artifactId', dep.name)
+                        dependencyNode.appendNode('version', dep.version)
+                        dependencyNode.appendNode('scope', 'compile')
+                    }
+                }
             }
         }
+        // release(MavenPublication) {
+        //     groupId = 'com.github.verifyspeed'
+        //     artifactId = 'VerifySpeed_Android_SDK'
+        //     version = '1.0.0'
+        //     pom {
+        //         description = 'First release'
+        //     }
+        // }
     }
     repositories {
-        mavenLocal()
+        maven {
+            url = uri("$buildDir/repo")
+        }
     }
+    // repositories {
+    //     mavenLocal()
+    // }
 }
