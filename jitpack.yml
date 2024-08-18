@@ -5,5 +5,5 @@ before_install:
   - ./scripts/prepareJitpackEnvironment.sh
 
 install:
-  - FILE="-Dfile=VerifySpeedAndroidLibrary-prod-release.aar"
-  - mvn install:install-file $FILE -DgroupId=com.github.verifyspeed -DartifactId=VerifySpeedAndroidLibrary-prod-release -Dversion=1.0.0 -Dpackaging=aar -DgeneratePom=true
+  - FILE="VerifySpeedAndroidLibrary-prod-release.aar"
+  - mvn install:install-file -Dfile=$FILE -DgroupId=com.github.verifyspeed -DartifactId=VerifySpeedAndroidLibrary-prod-release -Dversion=1.0.0 -Dpackaging=aar -DgeneratePom=true
