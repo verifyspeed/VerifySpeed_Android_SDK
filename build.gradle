@@ -83,7 +83,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.github.verifyspeed'
             artifactId = 'VerifySpeed_Android_SDK'
-            version = '1.0.1'
+            version = '1.0.0'
             pom {
                 description = 'First release'
             }
