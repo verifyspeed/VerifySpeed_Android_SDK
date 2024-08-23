@@ -2,8 +2,5 @@ jdk:
   - openjdk17
 
 install:
-  - ./gradlew clean build
-
-# install:
-#   - FILE="VerifySpeedAndroidLibrary-prod-release.aar"
-#   - mvn install:install-file -Dfile=$FILE -DgroupId=com.github.verifyspeed -DartifactId=VerifySpeedAndroidLibrary-prod-release -Dversion=1.0.1 -Dpackaging=aar -DgeneratePom=true
+  - FILE="VerifySpeedAndroidLibrary-prod-release.aar"
+  - mvn install:install-file -Dfile=$FILE -DgroupId=com.github.verifyspeed -DartifactId=VerifySpeedAndroidLibrary-prod-release -Dversion=1.0.1 -Dpackaging=aar -DgeneratePom=true

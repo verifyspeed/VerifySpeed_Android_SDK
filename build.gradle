@@ -28,28 +28,34 @@ dependencies {
     api 'com.squareup.retrofit2:converter-scalars:2.9.0'
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                groupId = group
-                artifactId = 'VerifySpeedAndroidLibrary-prod-release'
-                version = version
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.verifyspeed'
+            artifactId = 'VerifySpeedAndroidLibrary-prod-release'
+            version = '1.0.1'
 
-                from components.release
+            artifact("$buildDir/outputs/aar/VerifySpeedAndroidLibrary-release.aar")
 
-                pom {
-                    dependencies {
-                        api 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
-                        api 'com.google.code.gson:gson:2.8.9'
-                        api 'com.squareup.retrofit2:retrofit:2.9.0'
-                        api 'com.squareup.retrofit2:converter-gson:2.9.0'
-                        api 'com.squareup.retrofit2:converter-scalars:2.9.0'
+            pom {
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each { dep ->
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dep.group)
+                        dependencyNode.appendNode('artifactId', dep.name)
+                        dependencyNode.appendNode('version', dep.version)
+                        if (dep.configuration != 'compile') {
+                            dependencyNode.appendNode('scope', dep.configuration)
+                        }
                     }
                 }
-
-                artifact("$buildDir/outputs/aar/VerifySpeedAndroidLibrary-release.aar")
             }
+        }
+    }
+    repositories {
+        maven {
+            url = uri("https://jitpack.io")
         }
     }
 }
