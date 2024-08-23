@@ -26,7 +26,7 @@ dependencies {
 
 publishing {
     publications {
-        release(MavenPublication) {
+        aar(MavenPublication) {
             groupId = 'com.github.verifyspeed'
             artifactId = 'VerifySpeedAndroidLibrary-prod-release'
             version = version
@@ -50,7 +50,7 @@ publishing {
     }
     repositories {
         maven {
-            url = uri("https://jitpack.io")
+            url = uri("https://github.com/verifyspeed/VerifySpeed_Android_SDK.git")
         }
     }
 }

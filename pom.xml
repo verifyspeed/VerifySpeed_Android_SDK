@@ -14,4 +14,19 @@
             <version>2.5.0</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.dcendents</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>4.6</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sourceDirectory>src/main/java</sourceDirectory>
+                    <resourcesDirectory>src/main/resources</resourcesDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
