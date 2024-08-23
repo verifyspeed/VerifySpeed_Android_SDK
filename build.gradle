@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.github.verifyspeed' // Replace with your group ID
+group = 'com.github.verifyspeed'
 version = '1.0.1' 
 
 android {
