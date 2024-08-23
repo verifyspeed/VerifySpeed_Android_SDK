@@ -1,0 +1,52 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
+
+group = 'com.github.verifyspeed'
+version = '1.0.8' 
+
+android {
+    namespace = 'co.verifyspeed.androidlibrary'
+
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName version
+    }
+}
+
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId = 'com.github.verifyspeed'
+            artifactId = 'VerifySpeedAndroidLibrary-prod-release'
+            version = version
+
+            artifact("VerifySpeedAndroidLibrary-prod-release.aar")
+            pom {
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+                    configurations.implementation.allDependencies.each { dep ->
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dep.group)
+                        dependencyNode.appendNode('artifactId', dep.name)
+                        dependencyNode.appendNode('version', dep.version)
+                        if (dep.configuration != 'compile') {
+                            dependencyNode.appendNode('scope', dep.configuration)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = uri("https://github.com/verifyspeed/VerifySpeed_Android_SDK.git")
+        }
+    }
+}
