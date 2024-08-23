@@ -9,54 +9,9 @@
     <description>FIRST RELEASE</description>
     <dependencies>
         <dependency>
-            <groupId>androidx.core</groupId>
-            <artifactId>core-ktx</artifactId>
-            <version>1.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>androidx.appcompat</groupId>
-            <artifactId>appcompat</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.android.material</groupId>
-            <artifactId>material</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-        <dependency>
             <groupId>androidx.lifecycle</groupId>
             <artifactId>lifecycle-runtime-ktx</artifactId>
             <version>2.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>androidx.activity</groupId>
-            <artifactId>activity-compose</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>androidx.compose.ui</groupId>
-            <artifactId>ui</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>androidx.compose.ui</groupId>
-            <artifactId>ui-graphics</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>androidx.compose.ui</groupId>
-            <artifactId>ui-tooling-preview</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>androidx.compose.material3</groupId>
-            <artifactId>material3</artifactId>
-            <version>1.0.0-alpha02</version>
-        </dependency>
-        <dependency>
-            <groupId>androidx.lifecycle</groupId>
-            <artifactId>lifecycle-viewmodel-compose</artifactId>
-            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
