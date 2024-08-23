@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.github.verifyspeed'
-version = '1.0.3' 
+version = '1.0.4' 
 
 android {
     namespace = 'co.verifyspeed.androidlibrary'
