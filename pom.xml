@@ -5,7 +5,7 @@
     <groupId>com.github.verifyspeed</groupId>
     <artifactId>VerifySpeedAndroidLibrary-prod-release</artifactId>
     <version>1.0.0</version>
-    <packaging>aar</packaging>
+    <packaging>pom</packaging>
     <description>FIRST RELEASE</description>
     <dependencies>
         <dependency>
