@@ -1,62 +1,24 @@
-// buildscript {
-//     ext.kotlin_version = '1.7.10'
-//     repositories {
-//         google()
-//         mavenCentral()
-//         mavenLocal()
-//     }
-
-//     dependencies {
-//         classpath 'com.android.tools.build:gradle:7.3.0'
-//         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//     }
-// }
-
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
 }
 
+group = 'com.github.verifyspeed' // Replace with your group ID
+version = '1.0.1' 
+
 android {
+    namespace = 'co.verifyspeed.androidlibrary'
+
     compileSdk 33
 
     defaultConfig {
         minSdk 21
         targetSdk 33
-
-//         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//         consumerProguardFiles "consumer-rules.pro"
-//     }
-
-//     buildTypes {
-//         release {
-//             minifyEnabled false
-//             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//             consumerProguardFiles 'consumer-rules.pro'
-//         }
-//     }
-//     compileOptions {
-//         sourceCompatibility JavaVersion.VERSION_1_8
-//         targetCompatibility JavaVersion.VERSION_1_8
-//     }
-
-//     kotlinOptions {
-//         jvmTarget = '1.8'
+        versionCode 1
+        versionName "1.0.1"
     }
 }
-
-// java {
-//     toolchain {
-//         languageVersion = JavaLanguageVersion.of(17)
-//     }
-// }
-
-// java {
-//     sourceCompatibility = JavaVersion.VERSION_17
-//     targetCompatibility = JavaVersion.VERSION_17
-// }
-
 
 dependencies {
     api 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
@@ -64,43 +26,17 @@ dependencies {
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.retrofit2:converter-gson:2.9.0'
     api 'com.squareup.retrofit2:converter-scalars:2.9.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
 
 publishing {
     publications {
-        maven(MavenPublication) {
+        aar(MavenPublication) {
+            groupId = group
+            artifactId = 'VerifySpeedAndroidLibrary-prod-release'
+            version = version
+
             from components.release
-            pom {
-                withXml {
-                    def dependenciesNode = asNode().appendNode('dependencies')
-                    configurations.api.allDependencies.each { dep ->
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', dep.group)
-                        dependencyNode.appendNode('artifactId', dep.name)
-                        dependencyNode.appendNode('version', dep.version)
-                        dependencyNode.appendNode('scope', 'compile')
-                    }
-                }
-            }
-        }
-        // release(MavenPublication) {
-        //     groupId = 'com.github.verifyspeed'
-        //     artifactId = 'VerifySpeed_Android_SDK'
-        //     version = '1.0.0'
-        //     pom {
-        //         description = 'First release'
-        //     }
-        // }
-    }
-    repositories {
-        maven {
-            url = uri("$buildDir/repo")
+            artifact("$buildDir/outputs/aar/VerifySpeedAndroidLibrary-prod-release.aar")
         }
     }
-    // repositories {
-    //     mavenLocal()
-    // }
 }
