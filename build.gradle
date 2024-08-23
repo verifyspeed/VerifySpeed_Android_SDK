@@ -29,9 +29,9 @@ dependencies {
 }
 
 afterEvaluate {
-   publishing {
-    publications {
-            aar(MavenPublication) {
+    publishing {
+        publications {
+            maven(MavenPublication) {
                 groupId = group
                 artifactId = 'VerifySpeedAndroidLibrary-prod-release'
                 version = version
@@ -47,6 +47,8 @@ afterEvaluate {
                         api 'com.squareup.retrofit2:converter-scalars:2.9.0'
                     }
                 }
+
+                artifact("$buildDir/outputs/aar/VerifySpeedAndroidLibrary-release.aar")
             }
         }
     }
