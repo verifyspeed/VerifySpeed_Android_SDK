@@ -46,10 +46,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    
+
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.8.5")
-    
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -59,4 +59,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation("com.github.verifyspeed:VerifySpeed_Android_SDK:1.0.27")
+
+    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.33")
 }

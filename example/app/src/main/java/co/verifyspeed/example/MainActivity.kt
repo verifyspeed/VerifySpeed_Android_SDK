@@ -1,5 +1,6 @@
 package co.verifyspeed.example
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -45,6 +46,27 @@ import co.verifyspeed.example.ui.message.MessageActivity
 import co.verifyspeed.example.ui.otp.OtpPage
 import co.verifyspeed.example.ui.phone.PhoneNumberPage
 import co.verifyspeed.example.ui.theme.ExampleTheme
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import co.verifyspeed.example.data.VerifySpeedService
+
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+    private val verifySpeedService = VerifySpeedService()
+    private val _countryCode = MutableStateFlow<String?>(null)
+    val countryCode = _countryCode.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            verifySpeedService.getCountry().onSuccess { code ->
+                _countryCode.value = code
+            }
+        }
+    }
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +78,12 @@ class MainActivity : ComponentActivity() {
         // * TIP: Set your client key
         VerifySpeed.setClientKey("YOUR_CLIENT_KEY")
 
-        setContent { ExampleTheme { MainContent() } }
+        setContent { 
+            ExampleTheme { 
+                val mainViewModel: MainViewModel = viewModel()
+                MainContent(mainViewModel) 
+            } 
+        }
     }
 }
 
@@ -68,7 +95,7 @@ sealed class Screen(val route: String, val title: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContent() {
+fun MainContent(mainViewModel: MainViewModel) {
     val navController = rememberNavController()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     val currentScreen =
@@ -106,6 +133,7 @@ fun MainContent() {
 
                 PhoneNumberPage(
                         method = method,
+                        mainViewModel = mainViewModel,
                         onNavigateToOtp = { verificationKey ->
                             navController.navigate(
                                     Screen.Otp.route.replace("{verificationKey}", verificationKey)

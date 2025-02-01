@@ -4,6 +4,7 @@ import android.util.Log
 import co.verifyspeed.androidlibrary.VerifySpeed
 import co.verifyspeed.androidlibrary.VerifySpeedError
 import co.verifyspeed.androidlibrary.VerifySpeedListener
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -16,6 +17,7 @@ class VerifySpeedService {
     companion object {
         private const val BASE_URL = "YOUR_BASE_URL"
         private const val TAG = "VerifySpeedService"
+        private val phoneUtil = PhoneNumberUtil.getInstance()
     }
 
     suspend fun getVerificationKey(methodName: String): VerificationKeyModel {
@@ -88,6 +90,23 @@ class VerifySpeedService {
 
             val response = readResponse(connection)
             response.getString("phoneNumber")
+        }
+    }
+
+    suspend fun getCountry(): Result<String> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val url = URL("https://api.country.is")
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"
+
+                val response = readResponse(connection)
+                val isoCountryCode = response.getString("country")
+                val callingCode = "+${phoneUtil.getCountryCodeForRegion(isoCountryCode)}"
+                Result.success(callingCode)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 

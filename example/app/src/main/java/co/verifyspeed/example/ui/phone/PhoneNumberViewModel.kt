@@ -6,16 +6,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.verifyspeed.example.MainViewModel
 import co.verifyspeed.example.data.VerifySpeedService
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class PhoneNumberViewModel(
-        private val verifySpeedService: VerifySpeedService = VerifySpeedService()
+        private val verifySpeedService: VerifySpeedService = VerifySpeedService(),
+        private val mainViewModel: MainViewModel
 ) : ViewModel() {
     var isLoading by mutableStateOf(false)
         private set
     var error by mutableStateOf<String?>(null)
         private set
+
+    private val _selectedCountry = MutableStateFlow<String?>(null)
+    val selectedCountry = _selectedCountry.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            mainViewModel.countryCode.collect { code -> _selectedCountry.value = code }
+        }
+    }
 
     fun sendOtp(phoneNumber: String, method: String, onSuccess: (String) -> Unit) {
         viewModelScope.launch {
