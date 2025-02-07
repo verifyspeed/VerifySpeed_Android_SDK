@@ -10,13 +10,13 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-// * TIP: Message Activity
-// * This activity is launched from MainActivity when user selects a message-based verification method
-// * When user leaves the app and returns via deep link, onResume is called
-// * We need to notify VerifySpeed on resume to handle the deep link verification flow
-// * Best practice: Create a separate activity for handling deep links that destroys itself
-// * after successful verification to prevent unnecessary notifyOnResumed calls
-// * when there is no active verification in progress
+//* TIP: Message Activity
+//* This activity is launched from MainActivity when user selects a message-based verification method
+//* When user leaves the app and returns via deep link, onResume is called
+//* We need to notify VerifySpeed on resume to handle the deep link verification flow
+//* Best practice: Create a separate activity for handling deep links that destroys itself
+//* after successful verification to prevent unnecessary notifyOnResumed calls
+//* when there is no active verification in progress
 
 class MessageActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +26,7 @@ class MessageActivity : ComponentActivity() {
         // Get the method from intent
         val method = intent.getStringExtra("method") ?: return finish()
 
-        // * TIP: Set activity for VerifySpeed
+        //* TIP: Set activity for VerifySpeed
         VerifySpeed.setActivity(this)
 
         setContent {
@@ -34,7 +34,11 @@ class MessageActivity : ComponentActivity() {
                 MessagePage(
                         method = method,
                         onVerificationSuccess = {
-                            // Only finish the activity when user dismisses the dialog
+                            // Finish the activity when user dismisses the dialog
+                            finish()
+                        },
+                        onBackPressed = {
+                            // Finish the activity when user click back button
                             finish()
                         }
                 )
@@ -46,7 +50,7 @@ class MessageActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
-            // Notify when activity is resumed for Deep Link Process
+            //* TIP Notify when activity is resumed for Deep Link Process
             VerifySpeed.notifyOnResumed()
         }
     }

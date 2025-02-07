@@ -5,13 +5,13 @@ import co.verifyspeed.androidlibrary.VerifySpeed
 import co.verifyspeed.androidlibrary.VerifySpeedError
 import co.verifyspeed.androidlibrary.VerifySpeedListener
 import com.google.i18n.phonenumbers.PhoneNumberUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
 
 class VerifySpeedService {
     companion object {
@@ -22,7 +22,7 @@ class VerifySpeedService {
 
     suspend fun getVerificationKey(methodName: String): VerificationKeyModel {
         return withContext(Dispatchers.IO) {
-            // * TIP: Get verification key and deep link
+            //* TIP: Get verification key and deep link
             val url = URL("$BASE_URL/YOUR_ENDPOINT")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "POST"
@@ -42,7 +42,7 @@ class VerifySpeedService {
 
     suspend fun verifyPhoneNumberWithOtp(verificationKey: String, phoneNumber: String) {
         withContext(Dispatchers.IO) {
-            // * TIP: Verify phone number with OTP
+            //* TIP: Verify phone number with OTP
             VerifySpeed.verifyPhoneNumberWithOtp(
                     verificationKey = verificationKey,
                     phoneNumber = phoneNumber
@@ -57,7 +57,7 @@ class VerifySpeedService {
             onError: (VerifySpeedError) -> Unit
     ) {
         withContext(Dispatchers.IO) {
-            // * TIP: Validate OTP
+            //* TIP: Validate OTP
             VerifySpeed.validateOTP(
                     otpCode = otpCode,
                     verificationKey = verificationKey,
@@ -78,7 +78,6 @@ class VerifySpeedService {
 
     suspend fun getPhoneNumber(token: String): String {
         return withContext(Dispatchers.IO) {
-            // * TIP: Get phone number
             val url = URL("$BASE_URL/YOUR_ENDPOINT")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "POST"

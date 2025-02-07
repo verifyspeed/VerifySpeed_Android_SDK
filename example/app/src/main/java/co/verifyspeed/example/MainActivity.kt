@@ -1,6 +1,5 @@
 package co.verifyspeed.example
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -35,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,31 +42,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import co.verifyspeed.androidlibrary.MethodModel
 import co.verifyspeed.androidlibrary.VerifySpeed
+import co.verifyspeed.example.ui.common.VerificationDialog
+import co.verifyspeed.example.ui.main.MainViewModel
 import co.verifyspeed.example.ui.message.MessageActivity
 import co.verifyspeed.example.ui.otp.OtpPage
 import co.verifyspeed.example.ui.phone.PhoneNumberPage
 import co.verifyspeed.example.ui.theme.ExampleTheme
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import co.verifyspeed.example.data.VerifySpeedService
-
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private val verifySpeedService = VerifySpeedService()
-    private val _countryCode = MutableStateFlow<String?>(null)
-    val countryCode = _countryCode.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            verifySpeedService.getCountry().onSuccess { code ->
-                _countryCode.value = code
-            }
-        }
-    }
-}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,12 +62,7 @@ class MainActivity : ComponentActivity() {
         // * TIP: Set your client key
         VerifySpeed.setClientKey("YOUR_CLIENT_KEY")
 
-        setContent { 
-            ExampleTheme { 
-                val mainViewModel: MainViewModel = viewModel()
-                MainContent(mainViewModel) 
-            } 
-        }
+        setContent { ExampleTheme { MainContent() } }
     }
 }
 
@@ -95,7 +74,8 @@ sealed class Screen(val route: String, val title: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContent(mainViewModel: MainViewModel) {
+fun MainContent() {
+    val mainViewModel: MainViewModel = viewModel()
     val navController = rememberNavController()
     val currentBackStackEntry = navController.currentBackStackEntryAsState()
     val currentScreen =
@@ -126,7 +106,7 @@ fun MainContent(mainViewModel: MainViewModel) {
                 startDestination = Screen.Methods.route,
                 modifier = Modifier.padding(paddingValues)
         ) {
-            composable(Screen.Methods.route) { MethodsList(navController) }
+            composable(Screen.Methods.route) { MethodsList(navController, mainViewModel) }
 
             composable(Screen.PhoneNumber.route) { backStackEntry ->
                 val method = backStackEntry.arguments?.getString("method") ?: return@composable
@@ -156,8 +136,9 @@ fun MainContent(mainViewModel: MainViewModel) {
     }
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
-fun MethodsList(navController: NavHostController) {
+fun MethodsList(navController: NavHostController, mainViewModel: MainViewModel) {
     val methods = remember { mutableStateOf<List<MethodModel>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
     val context = LocalContext.current
@@ -168,11 +149,31 @@ fun MethodsList(navController: NavHostController) {
         isLoading.value = false
     }
 
+    LaunchedEffect(Unit) {
+        GlobalScope.launch {
+            // * TIP: Check for interrupted session
+            VerifySpeed.checkInterruptedSession { token ->
+                if (token != null) {
+                    mainViewModel.showSuccessDialog()
+                    GlobalScope.launch { mainViewModel.getPhoneNumberFromToken(token) }
+                }
+            }
+        }
+    }
+
     Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
     ) {
+        VerificationDialog(
+                showDialog = mainViewModel.showSuccessDialog,
+                isLoading = mainViewModel.isLoading,
+                phoneNumber = mainViewModel.phoneNumber,
+                title = "Interrupted Session Found",
+                onDismiss = { mainViewModel.hideSuccessDialog() }
+        )
+
         if (isLoading.value) {
             CircularProgressIndicator()
         } else if (methods.value.isEmpty()) {
@@ -200,7 +201,7 @@ fun MethodsList(navController: NavHostController) {
                                     )
                                 }
                                 isMessage -> {
-                                    // Launch MessageActivity instead of navigating
+                                    // * TIP Launch MessageActivity instead of navigating
                                     val intent =
                                             Intent(context, MessageActivity::class.java).apply {
                                                 putExtra("method", method.methodName)

@@ -7,17 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import co.verifyspeed.example.Screen
+import co.verifyspeed.example.ui.common.VerificationDialog
 
 @Composable
 fun OtpPage(
@@ -47,6 +44,18 @@ fun OtpPage(
         viewModel.error?.let { error -> snackBarHostState.showSnackbar(message = error) }
     }
 
+    VerificationDialog(
+            showDialog = viewModel.showSuccessDialog,
+            isLoading = viewModel.isLoading,
+            phoneNumber = viewModel.phoneNumber,
+            title = "Verification Successful",
+            onDismiss = {
+                navController.navigate(Screen.Methods.route) {
+                    popUpTo(Screen.Methods.route) { inclusive = true }
+                }
+            }
+    )
+
     Scaffold(
             modifier = modifier.fillMaxSize(),
             snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
@@ -56,33 +65,6 @@ fun OtpPage(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
         ) {
-            if (viewModel.showSuccessDialog) {
-                AlertDialog(
-                        onDismissRequest = {
-                            navController.navigate(Screen.Methods.route) {
-                                popUpTo(Screen.Methods.route) { inclusive = true }
-                            }
-                        },
-                        title = { Text("Verification Successful") },
-                        text = {
-                            if (viewModel.isLoading) {
-                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                            } else {
-                                Text("Your verified phone number is: ${viewModel.phoneNumber}")
-                            }
-                        },
-                        confirmButton = {
-                            TextButton(
-                                    onClick = {
-                                        navController.navigate(Screen.Methods.route) {
-                                            popUpTo(Screen.Methods.route) { inclusive = true }
-                                        }
-                                    }
-                            ) { Text("OK") }
-                        }
-                )
-            }
-
             OutlinedTextField(
                     value = otpValue,
                     onValueChange = { newValue: String ->

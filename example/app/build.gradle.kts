@@ -58,7 +58,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("com.github.verifyspeed:VerifySpeed_Android_SDK:1.0.27")
+    //* TIP Add SDK dependency
+    implementation("com.github.verifyspeed:VerifySpeed_Android_SDK:1.0.28")
 
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.33")
 }

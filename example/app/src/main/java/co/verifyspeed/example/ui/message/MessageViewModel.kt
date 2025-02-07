@@ -32,9 +32,9 @@ class MessageViewModel(private val verifySpeedService: VerifySpeedService = Veri
                 // Get verification key and deep link
                 val response = verifySpeedService.getVerificationKey(method)
 
-                // * TIP: Verify phone number with Deep Link
+                //* TIP: Verify phone number with Deep Link
                 VerifySpeed.verifyPhoneNumberWithDeepLink(
-                        deeplink = response.deepLink ?: "",
+                        deeplink = response.deepLink!!,
                         verificationKey = response.verificationKey,
                         callBackListener =
                                 object : VerifySpeedListener {

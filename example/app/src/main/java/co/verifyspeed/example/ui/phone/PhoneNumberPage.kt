@@ -28,15 +28,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import co.verifyspeed.example.MainViewModel
+import co.verifyspeed.example.ui.main.MainViewModel
 
 @Composable
 fun PhoneNumberPage(
-        modifier: Modifier = Modifier,
-        method: String,
-        mainViewModel: MainViewModel,
-        onNavigateToOtp: (String) -> Unit
+    modifier: Modifier = Modifier,
+    method: String,
+    mainViewModel: MainViewModel,
+    onNavigateToOtp: (String) -> Unit
 ) {
     val viewModel = remember { PhoneNumberViewModel(mainViewModel = mainViewModel) }
     var phoneNumber by remember { mutableStateOf("") }
