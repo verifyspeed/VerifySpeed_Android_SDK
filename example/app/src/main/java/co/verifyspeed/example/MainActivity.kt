@@ -57,9 +57,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // * TIP: Set your activity
+        //* TIP: Set your activity
         VerifySpeed.setActivity(this)
-        // * TIP: Set your client key
+        //* TIP: Set your client key
         VerifySpeed.setClientKey("YOUR_CLIENT_KEY")
 
         setContent { ExampleTheme { MainContent() } }
@@ -144,14 +144,14 @@ fun MethodsList(navController: NavHostController, mainViewModel: MainViewModel) 
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        // * TIP: Initialize to get available methods
+        //* TIP: Initialize to get available methods
         methods.value = VerifySpeed.initialize()
         isLoading.value = false
     }
 
     LaunchedEffect(Unit) {
         GlobalScope.launch {
-            // * TIP: Check for interrupted session
+            //* TIP: Check for interrupted session
             VerifySpeed.checkInterruptedSession { token ->
                 if (token != null) {
                     mainViewModel.showSuccessDialog()
@@ -201,7 +201,7 @@ fun MethodsList(navController: NavHostController, mainViewModel: MainViewModel) 
                                     )
                                 }
                                 isMessage -> {
-                                    // * TIP Launch MessageActivity instead of navigating
+                                    //* TIP Launch MessageActivity instead of navigating
                                     val intent =
                                             Intent(context, MessageActivity::class.java).apply {
                                                 putExtra("method", method.methodName)
