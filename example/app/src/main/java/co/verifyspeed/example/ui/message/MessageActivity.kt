@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import co.verifyspeed.androidlibrary.VerifySpeed
+import co.verifyspeed.android.VerifySpeed
 import co.verifyspeed.example.ui.theme.ExampleTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope

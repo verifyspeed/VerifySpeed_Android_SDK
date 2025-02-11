@@ -1,9 +1,9 @@
 package co.verifyspeed.example.data
 
 import android.util.Log
-import co.verifyspeed.androidlibrary.VerifySpeed
-import co.verifyspeed.androidlibrary.VerifySpeedError
-import co.verifyspeed.androidlibrary.VerifySpeedListener
+import co.verifyspeed.android.VerifySpeed
+import co.verifyspeed.android.VerifySpeedError
+import co.verifyspeed.android.VerifySpeedListener
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -40,40 +40,34 @@ class VerifySpeedService {
         }
     }
 
-    suspend fun verifyPhoneNumberWithOtp(verificationKey: String, phoneNumber: String) {
-        withContext(Dispatchers.IO) {
-            //* TIP: Verify phone number with OTP
-            VerifySpeed.verifyPhoneNumberWithOtp(
-                    verificationKey = verificationKey,
-                    phoneNumber = phoneNumber
-            )
-        }
+    fun verifyPhoneNumberWithOtp(verificationKey: String, phoneNumber: String) {
+        VerifySpeed.verifyPhoneNumberWithOtp(
+            phoneNumber,
+            verificationKey,
+        )
     }
 
-    suspend fun validateOtp(
+    fun validateOtp(
             otpCode: String,
             verificationKey: String,
             onSuccess: (String) -> Unit,
             onError: (VerifySpeedError) -> Unit
     ) {
-        withContext(Dispatchers.IO) {
-            //* TIP: Validate OTP
-            VerifySpeed.validateOTP(
-                    otpCode = otpCode,
-                    verificationKey = verificationKey,
-                    callBackListener =
-                            object : VerifySpeedListener {
-                                override fun onFail(error: VerifySpeedError) {
-                                    Log.e(TAG, "Validation failed: $error")
-                                    onError(error)
-                                }
+        //* TIP: Validate OTP
+        VerifySpeed.validateOTP(
+            otpCode,
+            verificationKey,
+            object : VerifySpeedListener {
+                override fun onFail(error: VerifySpeedError) {
+                    Log.e(TAG, "Validation failed: $error")
+                    onError(error)
+                }
 
-                                override fun onSuccess(token: String) {
-                                    onSuccess(token)
-                                }
-                            }
-            )
-        }
+                override fun onSuccess(token: String) {
+                    onSuccess(token)
+                }
+            }
+        )
     }
 
     suspend fun getPhoneNumber(token: String): String {

@@ -6,9 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.verifyspeed.androidlibrary.VerifySpeed
-import co.verifyspeed.androidlibrary.VerifySpeedError
-import co.verifyspeed.androidlibrary.VerifySpeedListener
+import co.verifyspeed.android.VerifySpeed
+import co.verifyspeed.android.VerifySpeedError
+import co.verifyspeed.android.VerifySpeedListener
 import co.verifyspeed.example.data.VerifySpeedService
 import kotlinx.coroutines.launch
 
@@ -34,18 +34,18 @@ class MessageViewModel(private val verifySpeedService: VerifySpeedService = Veri
 
                 //* TIP: Verify phone number with Deep Link
                 VerifySpeed.verifyPhoneNumberWithDeepLink(
-                        deeplink = response.deepLink!!,
-                        verificationKey = response.verificationKey,
-                        callBackListener =
-                                object : VerifySpeedListener {
-                                    override fun onFail(error: VerifySpeedError) {
-                                        handleError(error.message)
-                                    }
+                    response.deepLink!!,
+                    response.verificationKey,
+                    true,
+                    object : VerifySpeedListener {
+                        override fun onFail(error: VerifySpeedError) {
+                            handleError(error.message)
+                        }
 
-                                    override fun onSuccess(token: String) {
-                                        showPhoneNumberDialog(token)
-                                    }
-                                }
+                        override fun onSuccess(token: String) {
+                            showPhoneNumberDialog(token)
+                        }
+                    }
                 )
             } catch (e: Exception) {
                 handleError(e.message ?: "Verification failed")
@@ -70,9 +70,9 @@ class MessageViewModel(private val verifySpeedService: VerifySpeedService = Veri
         }
     }
 
-    private fun handleError(message: String) {
+    private fun handleError(message: String?) {
         error = message
-        Log.e(TAG, message)
+        Log.e(TAG, message ?: "Null")
     }
 
     companion object {

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    val verifySpeedService = VerifySpeedService()
+    private val verifySpeedService = VerifySpeedService()
     private val _countryCode = MutableStateFlow<String?>(null)
     val countryCode = _countryCode.asStateFlow()
     var isLoading by mutableStateOf(false)

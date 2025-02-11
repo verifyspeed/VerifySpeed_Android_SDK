@@ -40,8 +40,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import co.verifyspeed.androidlibrary.MethodModel
-import co.verifyspeed.androidlibrary.VerifySpeed
+import co.verifyspeed.android.MethodModel
+import co.verifyspeed.android.VerifySpeed
 import co.verifyspeed.example.ui.common.VerificationDialog
 import co.verifyspeed.example.ui.main.MainViewModel
 import co.verifyspeed.example.ui.message.MessageActivity
@@ -145,7 +145,7 @@ fun MethodsList(navController: NavHostController, mainViewModel: MainViewModel) 
 
     LaunchedEffect(Unit) {
         //* TIP: Initialize to get available methods
-        methods.value = VerifySpeed.initialize()
+        methods.value = VerifySpeed.initialize().get()
         isLoading.value = false
     }
 

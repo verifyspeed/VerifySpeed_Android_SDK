@@ -51,9 +51,9 @@ class OtpViewModel(private val verifySpeedService: VerifySpeedService = VerifySp
         }
     }
 
-    private fun handleError(message: String) {
+    private fun handleError(message: String?) {
         error = message
-        Log.e(TAG, message)
+        Log.e(TAG, message ?: "Null")
     }
 
     companion object {
