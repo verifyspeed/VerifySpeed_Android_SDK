@@ -5,10 +5,10 @@ plugins {
 }
 
 group = 'com.github.verifyspeed'
-version = '1.0.28' 
+version = '1.0.29' 
 
 android {
-    namespace = 'co.verifyspeed.androidlibrary'
+    namespace = 'co.verifyspeed.android'
 
     compileSdk 33
 
