@@ -6,9 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import co.verifyspeed.android.VerifySpeed
 import co.verifyspeed.example.ui.theme.ExampleTheme
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 //* TIP: Message Activity
 //* This activity is launched from MainActivity when user selects a message-based verification method
@@ -46,12 +43,8 @@ class MessageActivity : ComponentActivity() {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onResume() {
         super.onResume()
-        GlobalScope.launch {
-            //* TIP Notify when activity is resumed for Deep Link Process
-            VerifySpeed.notifyOnResumed()
-        }
+        VerifySpeed.notifyOnResumed()
     }
 }

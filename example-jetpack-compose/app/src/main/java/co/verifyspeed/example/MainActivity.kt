@@ -150,13 +150,11 @@ fun MethodsList(navController: NavHostController, mainViewModel: MainViewModel) 
     }
 
     LaunchedEffect(Unit) {
-        GlobalScope.launch {
-            //* TIP: Check for interrupted session
-            VerifySpeed.checkInterruptedSession { token ->
-                if (token != null) {
-                    mainViewModel.showSuccessDialog()
-                    GlobalScope.launch { mainViewModel.getPhoneNumberFromToken(token) }
-                }
+        //* TIP: Check for interrupted session
+        VerifySpeed.checkInterruptedSession { token ->
+            if (token != null) {
+                mainViewModel.showSuccessDialog()
+                GlobalScope.launch { mainViewModel.getPhoneNumberFromToken(token) }
             }
         }
     }

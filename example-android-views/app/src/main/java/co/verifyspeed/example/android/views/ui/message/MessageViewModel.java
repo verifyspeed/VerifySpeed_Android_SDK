@@ -62,14 +62,16 @@ public class MessageViewModel extends ViewModel {
 
                 //* TIP: Verify phone number with Deep Link
                 VerifySpeed.verifyPhoneNumberWithDeepLink(
-                        //  deeplink: String,
-                        response.getDeepLink(),
-                        //  verificationKey: String,
-                        response.getVerificationKey(),
-                        //  redirectToStore: Boolean
-                        true,
-                        //  callBackListener: VerifySpeedListener
-                        new VerifySpeedListener() {
+                        response.getDeepLink(), //  deeplink: String,
+                        response.getVerificationKey(), //  verificationKey: String,
+                        true, //  redirectToStore: Boolean
+                        new VerifySpeedListener() { //  callBackListener: VerifySpeedListener
+                            @Override
+                            public void onSuccess(String token) {
+                                Log.d(TAG, "Verification successful with token: " + token);
+                                showPhoneNumberDialog(token);
+                            }
+
                             @Override
                             public void onFail(VerifySpeedError verifySpeedError) {
                                 String errorMessage;
@@ -86,12 +88,6 @@ public class MessageViewModel extends ViewModel {
                                     errorMessage = "Failed to launch verification app";
                                 }
                                 handleError(errorMessage);
-                            }
-
-                            @Override
-                            public void onSuccess(String token) {
-                                Log.d(TAG, "Verification successful with token: " + token);
-                                showPhoneNumberDialog(token);
                             }
                         }
                 );
