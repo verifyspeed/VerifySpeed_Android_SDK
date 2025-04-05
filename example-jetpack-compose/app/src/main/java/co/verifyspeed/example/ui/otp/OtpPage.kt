@@ -68,11 +68,11 @@ fun OtpPage(
             OutlinedTextField(
                     value = otpValue,
                     onValueChange = { newValue: String ->
-                        if (newValue.length <= 6 && newValue.all { char -> char.isDigit() }) {
+                        if (newValue.length <= 5 && newValue.all { char -> char.isDigit() }) {
                             otpValue = newValue
                         }
                     },
-                    label = { Text("Enter 6-digit OTP") },
+                    label = { Text("Enter 5-digit OTP") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
@@ -88,7 +88,7 @@ fun OtpPage(
                                 onSuccess = onVerificationSuccess
                         )
                     },
-                    enabled = otpValue.length == 6,
+                    enabled = otpValue.length == 5,
                     modifier = Modifier.fillMaxWidth()
             ) { Text("Verify OTP") }
         }

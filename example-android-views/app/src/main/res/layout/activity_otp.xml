@@ -31,14 +31,14 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter 6-digit OTP">
+            android:hint="Enter 5-digit OTP">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/otpInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:maxLength="6"
+                android:maxLength="5"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>

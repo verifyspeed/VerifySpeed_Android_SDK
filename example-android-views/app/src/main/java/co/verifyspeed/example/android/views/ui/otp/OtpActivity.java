@@ -79,7 +79,7 @@ public class OtpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                verifyButton.setEnabled(s.length() == 6);
+                verifyButton.setEnabled(s.length() == 5);
             }
         });
     }
@@ -92,7 +92,7 @@ public class OtpActivity extends AppCompatActivity {
     private void observeViewModelStates() {
         viewModel.getIsLoading().observe(this, isLoading -> {
             progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-            verifyButton.setEnabled(!isLoading && otpInput.length() == 6);
+            verifyButton.setEnabled(!isLoading && otpInput.length() == 5);
             otpInput.setEnabled(!isLoading);
         });
 
