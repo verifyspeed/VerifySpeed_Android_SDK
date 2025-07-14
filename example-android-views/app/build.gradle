@@ -40,7 +40,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     //* TIP Add SDK dependency
-   implementation 'com.github.verifyspeed:VerifySpeed_Android_SDK:1.0.30'
+   implementation 'com.github.verifyspeed:VerifySpeed_Android_SDK:1.0.31'
 
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.33'
 }
